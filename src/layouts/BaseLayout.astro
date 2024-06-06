@@ -17,6 +17,7 @@ interface Props {
 
   titleTemplate: string;
   category: "wiki" | "tutorial";
+  canonical: string;
 }
 
 const content = Astro.props;
@@ -28,7 +29,7 @@ const sidebarData = await getNavData();
 <html lang="en" dir="ltr">
   <head class="h-full w-full">
     <SEO
-      canonical="https://daxa.dev/"
+      canonical={content.canonical}
       title={content.title}
       description={content.description}
       titleTemplate={content.titleTemplate}
