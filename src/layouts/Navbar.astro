@@ -60,6 +60,28 @@ interface Props {
           </>
         )
       }
+      {
+        Astro.props.category === "tutorial" && (
+          <>
+            <a href="https://wiki.daxa.dev/">
+              <svg
+                class="h-5 fill-primary-700 dark:fill-primary-500"
+                viewBox="0 0 18.141001 2.694"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <text
+                  style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.6393px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none;stroke-width:4.54913"
+                  x="-0.078188092"
+                  y="2.6495099"
+                >
+                  TUTORIAL
+                </text>
+              </svg>
+            </a>
+          </>
+        )
+      }
     </p>
 
     <button class="h-full">
