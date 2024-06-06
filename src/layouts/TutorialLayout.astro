@@ -1,0 +1,21 @@
+---
+import type { MarkdownLayoutProps } from "astro";
+import BaseLayout from "./BaseLayout.astro";
+
+type Props = MarkdownLayoutProps<{
+  title: string;
+  description: string;
+  link: string;
+}>;
+
+const content = Astro.props;
+---
+
+<BaseLayout
+  title={content.frontmatter.title}
+  description={content.frontmatter.description}
+  link={content.frontmatter.link}
+  headings={content.headings}
+  category="tutorial"
+  titleTemplate="%s | Daxa Tutorial"><slot /></BaseLayout
+>

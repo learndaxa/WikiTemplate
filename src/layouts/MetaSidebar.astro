@@ -1,0 +1,78 @@
+---
+interface Props {
+  headings: Array<{ depth: number; text: string; slug: string }>;
+  link: string;
+}
+---
+
+<aside
+  class="fixed right-0 top-0 block h-full w-full max-w-72 border-l border-gray-200 bg-white pt-16 dark:border-gray-800 dark:bg-gray-900 rtl:left-0 rtl:right-auto"
+>
+  <div class="relative w-full p-3 ps-6">
+    <h1 class="mb-1 text-lg font-semibold text-black dark:text-white">
+      Sections
+    </h1>
+    <ul class="px-3 text-sm text-gray-600 dark:text-gray-400">
+      {
+        Astro.props.headings.map((data) => {
+          if (data.depth > 3) return null;
+
+          if (data.depth === 2) {
+            return (
+              <li>
+                <a
+                  href={"#" + data.slug}
+                  target="_self"
+                  class="block w-full px-1.5 py-1 hover:text-black dark:hover:text-white"
+                >
+                  {data.text}
+                </a>
+              </li>
+            );
+          } else {
+            return (
+              <li>
+                <a
+                  href={"#" + data.slug}
+                  target="_self"
+                  class="block w-full px-1.5 py-1 ps-6 hover:text-black dark:hover:text-white"
+                >
+                  {data.text}
+                </a>
+              </li>
+            );
+          }
+        })
+      }
+    </ul>
+    <h1 class="mb-1 mt-4 text-lg font-semibold text-black dark:text-white">
+      Contribute
+    </h1>
+    <ul class="px-3 text-sm text-gray-600 dark:text-gray-400">
+      <li>
+        <a
+          href={Astro.props.link}
+          target="_blank"
+          rel="noopener"
+          class="block w-full px-1.5 py-1 hover:text-black dark:hover:text-white"
+          ><svg
+            class="inline h-5 w-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            ><path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+            ></path></svg
+          >Edit on GitHub</a
+        >
+      </li>
+    </ul>
+  </div>
+</aside>

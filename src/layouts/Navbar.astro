@@ -1,0 +1,166 @@
+---
+import { Image } from "astro:assets";
+import logoSrc from "../assets/logo.png";
+
+interface Props {
+  category: "wiki" | "tutorial";
+}
+---
+
+<nav
+  class="fixed left-0 top-0 block w-full border-b border-gray-300 bg-gray-200 dark:border-black dark:bg-gray-800"
+>
+  <div
+    class="max-w-screen-[1920px] relative mx-auto flex h-16 flex-wrap items-center justify-between p-3 px-6"
+  >
+    <p class="flex items-center space-x-2 rtl:space-x-reverse">
+      <a href="/">
+        <Image
+          src={logoSrc}
+          width="32"
+          height="32"
+          class="h-8 w-8"
+          alt="Daxa Logo"
+          loading="eager"
+        />
+      </a>
+      <a href="/">
+        <svg
+          class="h-5 fill-gray-900 dark:fill-gray-100"
+          viewBox="0 0 10.03473 2.6050849"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <text
+            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.6393px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none;stroke-width:4.54913"
+            x="-0.26299655"
+            y="2.6050875">DAXA</text
+          >
+        </svg>
+      </a>
+      {
+        Astro.props.category === "wiki" && (
+          <>
+            <a href="/wiki/">
+              <svg
+                class="h-5 fill-primary-700 dark:fill-primary-500"
+                viewBox="0 0 7.8365781 2.6050849"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <text
+                  style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.6393px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none;stroke-width:4.54913"
+                  x="-0.012439014"
+                  y="2.6050849"
+                >
+                  WIKI
+                </text>
+              </svg>
+            </a>
+          </>
+        )
+      }
+    </p>
+
+    <button class="h-full">
+      <div class="relative h-full w-full">
+        <div
+          class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
+        >
+          <svg
+            class="h-3 w-3 text-gray-800 dark:text-gray-200"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path>
+          </svg>
+        </div>
+        <div
+          class="flex h-full min-w-64 rounded-lg border border-gray-300 bg-white pe-3 ps-9 hover:border-black dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 hover:dark:border-gray-200"
+        >
+          <span class="inline-block self-center text-sm">Search</span>
+        </div>
+      </div>
+    </button>
+
+    <div>
+      <label class="navbar-select relative">
+        <span class="sr-only">Select theme</span>
+        <svg
+          class="absolute left-0 top-1/2 hidden h-4 w-4 -translate-y-1/2 translate-x-2 text-gray-800 dark:inline-block dark:text-white rtl:-translate-x-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z"
+          ></path>
+        </svg>
+        <svg
+          class="absolute left-0 top-1/2 inline-block h-4 w-4 -translate-y-1/2 translate-x-2 text-gray-800 dark:hidden dark:text-white rtl:-translate-x-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+          ></path>
+        </svg>
+        <select
+          id="navbar-theme-switcher"
+          class="appearance-none bg-transparent ps-8 text-gray-800 open:bg-red-500 dark:text-white"
+        >
+          <option value="light" class="text-black">Light</option>
+          <option value="dark" class="text-black">Dark</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  let navbar_theme_switcher = document.getElementById("navbar-theme-switcher");
+
+  navbar_theme_switcher.selectedIndex = 0;
+  if (website_theme === "light") {
+    navbar_theme_switcher.selectedIndex = 0;
+  } else if (website_theme === "dark") {
+    navbar_theme_switcher.selectedIndex = 1;
+  } else {
+    navbar_theme_switcher.selectedIndex = 2;
+  }
+
+  navbar_theme_switcher.addEventListener("change", (e) => {
+    if (e.target.selectedIndex === 0) {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      localStorage.setItem("website_theme", "light");
+      document.getElementById("navbar-theme-icon").innerHTML;
+    } else if (e.target.selectedIndex === 1) {
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("website_theme", "dark");
+    }
+  });
+</script>

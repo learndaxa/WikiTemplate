@@ -1,0 +1,223 @@
+---
+import { SEO } from "astro-seo";
+import Navbar from "./Navbar.astro";
+import NavSidebar from "./NavSidebar.astro";
+import MetaSidebar from "./MetaSidebar.astro";
+import { getNavData } from "../lib/navData";
+
+import "../assets/themes/prism-vs.scss";
+import "../assets/themes/prism-vsc-dark-plus.scss";
+
+interface Props {
+  title: string;
+  description: string;
+  link: string;
+
+  headings: { depth: number; text: string; slug: string }[];
+
+  titleTemplate: string;
+  category: "wiki" | "tutorial";
+}
+
+const content = Astro.props;
+
+const sidebarData = await getNavData();
+---
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head class="h-full w-full">
+    <SEO
+      canonical="https://daxa.dev/"
+      title={content.title}
+      description={content.description}
+      titleTemplate={content.titleTemplate}
+      ,
+      extend={{
+        link: [{ rel: "icon", href: "/favicon.png" }],
+        meta: [
+          { name: "author", content: "Daxa Contributors" },
+          { name: "generator", content: Astro.generator },
+          {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1.0",
+          },
+          { name: "theme-color", content: "#8467b6" },
+          { name: "charset", content: "UTF-8" },
+        ],
+      }}
+    />
+    <script is:inline>
+      let website_theme = localStorage.getItem("website_theme");
+      if (website_theme === null) {
+        website_theme = "dark";
+      }
+      document.documentElement.classList.add(website_theme);
+      localStorage.setItem("website_theme", website_theme);
+    </script>
+  </head>
+  <body class="h-full w-full bg-white dark:bg-gray-900">
+    <main class="bg-white px-72 pt-16 dark:bg-gray-900">
+      <header class="border-b border-gray-200 p-6 dark:border-gray-800">
+        <div class="mx-auto max-w-4xl">
+          <h1
+            class="mb-4 text-4xl font-bold leading-none tracking-tight text-gray-900 dark:text-white md:text-5xl lg:text-6xl"
+          >
+            {content.title}
+          </h1>
+          <p
+            class="text-lg font-normal text-gray-500 dark:text-gray-400 lg:text-xl"
+          >
+            {content.description}
+          </p>
+        </div>
+      </header>
+      <div class="w-full p-6 text-gray-500 dark:text-gray-400">
+        <article id="article" class="mx-auto w-full max-w-4xl">
+          <slot />
+        </article>
+        <script is:inline>
+          let tabButtons = document.querySelectorAll(
+            ".multilang-codeblock > .head > button",
+          );
+          tabButtons.forEach((e) => {
+            e.addEventListener("click", () => {
+              let tabIndex = Number(e.getAttribute("data-tab"));
+              let tabBody =
+                e.parentElement.parentElement.querySelector(".body");
+              Array.from(tabBody.children).forEach((e) => {
+                e.classList.remove("active");
+                if (Number(e.getAttribute("data-tab")) === tabIndex)
+                  e.classList.add("active");
+              });
+              let tabHead = e.parentElement;
+              Array.from(tabHead.children).forEach((e) => {
+                e.classList.remove("active");
+              });
+              e.classList.add("active");
+            });
+          });
+        </script>
+      </div>
+    </main>
+    <NavSidebar active={content.title} linktree={sidebarData} />
+    <MetaSidebar headings={content.headings} link={content.link} />
+    <Navbar category={content.category} />
+    <style lang="scss" is:global>
+      #article {
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .multilang-codeblock,
+        blockquote,
+        img,
+        table {
+          @apply my-2 block;
+        }
+
+        h2 {
+          @apply mt-12 text-3xl font-bold text-gray-900 dark:text-white;
+        }
+
+        h3 {
+          @apply mt-8 text-2xl font-bold text-gray-900 dark:text-white;
+        }
+
+        h4 {
+          @apply mt-8 text-xl font-bold text-gray-900 dark:text-white;
+        }
+
+        h5,
+        #h6 {
+          @apply mt-8 text-lg font-bold text-gray-900 dark:text-white;
+        }
+
+        b {
+          @apply font-bold text-gray-700 dark:text-gray-200;
+        }
+
+        p > code {
+          @apply rounded-sm bg-gray-100 px-1 text-gray-900 dark:bg-gray-800 dark:text-white;
+        }
+
+        blockquote {
+          @apply my-4 rounded-sm border-l-4 border-gray-200 bg-gray-100 p-4 dark:border-gray-700 dark:bg-gray-800;
+        }
+
+        a {
+          @apply text-primary-600 underline dark:text-primary-400;
+        }
+
+        ul {
+          @apply list-inside list-disc;
+        }
+
+        ol {
+          @apply list-inside list-decimal;
+        }
+
+        li li {
+          @apply ps-6;
+        }
+
+        table {
+          @apply table w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right;
+
+          thead {
+            @apply bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400;
+
+            th {
+              @apply px-4 py-2;
+            }
+          }
+
+          tbody {
+            tr {
+              @apply border-b bg-white dark:border-gray-700 dark:bg-gray-800;
+
+              td {
+                @apply px-4 py-2;
+              }
+            }
+          }
+        }
+
+        .multilang-codeblock {
+          @apply relative block border border-gray-300 dark:border-gray-800;
+
+          > .head {
+            @apply w-full;
+
+            > button {
+              @apply inline-block min-w-16 border-t-2 border-transparent bg-transparent px-2 py-1;
+
+              &.active {
+                @apply border-primary-400 bg-gray-200 dark:border-primary-600 dark:bg-gray-800;
+              }
+
+              > span {
+                @apply mx-auto;
+              }
+            }
+          }
+
+          > .body {
+            @apply w-full overflow-x-auto bg-gray-200 p-3 dark:bg-gray-800;
+
+            > div {
+              @apply hidden;
+
+              &.active {
+                @apply contents;
+              }
+            }
+          }
+        }
+      }
+    </style>
+  </body>
+</html>

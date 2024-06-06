@@ -1,0 +1,48 @@
+---
+interface Props {
+  linktree: Array<{ name: string; path: string }>;
+  active: string;
+}
+---
+
+<aside
+  class="fixed left-0 top-0 block h-full w-full max-w-72 border-r border-gray-300 bg-white pt-16 dark:border-black dark:bg-gray-800 rtl:left-auto rtl:right-0"
+>
+  <div class="relative w-full p-3 ps-6">
+    <ul class="space-y-1 text-sm">
+      {
+        Astro.props.linktree.map((data) => {
+          if (data.name === Astro.props.active) {
+            return (
+              <>
+                <li>
+                  <a
+                    href={data.path}
+                    target="_self"
+                    class="block w-full rounded-md bg-primary-600 px-1.5 py-1 font-semibold text-white"
+                  >
+                    {data.name}
+                  </a>
+                </li>
+              </>
+            );
+          }
+
+          return (
+            <>
+              <li>
+                <a
+                  href={data.path}
+                  target="_self"
+                  class="block w-full px-1.5 py-1 text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white"
+                >
+                  {data.name}
+                </a>
+              </li>
+            </>
+          );
+        })
+      }
+    </ul>
+  </div>
+</aside>
