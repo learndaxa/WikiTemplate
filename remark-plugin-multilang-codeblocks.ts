@@ -25,10 +25,8 @@ const multilangCodeblocks: Plugin<[], Root> = () => {
         return acc;
       }, [] as Node[]) as RootContent[];
 
-      if (codeBlockGroup.length > 1) {
+      if (codeBlockGroup.length > 0) {
         node.children.push(createMultiLangNode(codeBlockGroup) as RootContent);
-      } else if (codeBlockGroup.length === 1) {
-        node.children.push(codeBlockGroup[0]);
       }
     });
   };
@@ -98,11 +96,7 @@ function generateHighlightedHTML(
   if (lang === "plaintext") return escapeHTML(code);
   const prismlang = getPrismLangName(lang) || "plaintext";
   if (lang === "plaintext") return escapeHTML(code);
-  return Prism.highlight(
-    escapeHTML(code),
-    Prism.languages[prismlang],
-    prismlang,
-  );
+  return Prism.highlight(code, Prism.languages[prismlang], prismlang);
 }
 
 export default multilangCodeblocks;
