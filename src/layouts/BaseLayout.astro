@@ -4,6 +4,7 @@ import Navbar from "./Navbar.astro";
 import NavSidebar from "./NavSidebar.astro";
 import MetaSidebar from "./MetaSidebar.astro";
 import { getNavData } from "../lib/navData";
+import { ViewTransitions } from "astro:transitions";
 
 import "../assets/themes/prism-vs.scss";
 import "../assets/themes/prism-vsc-dark-plus.scss";
@@ -27,38 +28,53 @@ const sidebarData = await getNavData();
 
 <!doctype html>
 <html lang="en" dir="ltr">
-  <head class="h-full w-full">
-    <SEO
-      canonical={content.canonical}
-      title={content.title}
-      description={content.description}
-      titleTemplate={content.titleTemplate}
-      ,
-      extend={{
-        link: [{ rel: "icon", href: "/favicon.png" }],
-        meta: [
-          { name: "author", content: "Daxa Contributors" },
-          { name: "generator", content: Astro.generator },
-          {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0",
-          },
-          { name: "theme-color", content: "#8467b6" },
-          { name: "charset", content: "UTF-8" },
-        ],
-      }}
-    />
-    <script is:inline>
-      let website_theme = localStorage.getItem("website_theme");
-      if (website_theme === null) {
-        website_theme = "dark";
-      }
-      document.documentElement.classList.add(website_theme);
-      localStorage.setItem("website_theme", website_theme);
-    </script>
-  </head>
+  <script is:inline>
+    let website_theme;
+    function setDarkMode(doc) {
+      website_theme = localStorage.getItem("website_theme");
+      if (!website_theme)
+        localStorage.setItem(
+          "website_theme",
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light",
+        );
+      doc.documentElement.classList.toggle("dark", website_theme === "dark");
+    }
+    setDarkMode(document);
+    document.addEventListener("astro:before-swap", (doc) => {
+      setDarkMode(doc.newDocument);
+    });
+  </script>
+
+  <SEO
+    canonical={content.canonical}
+    title={content.title}
+    description={content.description}
+    titleTemplate={content.titleTemplate}
+    ,
+    extend={{
+      link: [{ rel: "icon", href: "/favicon.png" }],
+      meta: [
+        { name: "author", content: "Daxa Contributors" },
+        { name: "generator", content: Astro.generator },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1.0",
+        },
+        { name: "theme-color", content: "#8467b6" },
+        { name: "charset", content: "UTF-8" },
+      ],
+    }}
+  />
+  <ViewTransitions fallback="animate" />
+
   <body class="h-full w-full bg-white dark:bg-gray-900">
-    <main class="bg-white px-72 pt-16 dark:bg-gray-900">
+    <main
+      class="bg-white px-72 pt-16 dark:bg-gray-900"
+      transition:name="main"
+      transition:animate="slide"
+    >
       <header class="border-b border-gray-200 p-6 dark:border-gray-800">
         <div class="mx-auto max-w-4xl">
           <h1

@@ -162,27 +162,25 @@ interface Props {
 </nav>
 
 <script is:inline>
-  let navbar_theme_switcher = document.getElementById("navbar-theme-switcher");
+  document.addEventListener("astro:page-load", () => {
+    let navbar_theme_switcher = document.getElementById(
+      "navbar-theme-switcher",
+    );
+    console.log(navbar_theme_switcher);
 
-  navbar_theme_switcher.selectedIndex = 0;
-  if (website_theme === "light") {
-    navbar_theme_switcher.selectedIndex = 0;
-  } else if (website_theme === "dark") {
-    navbar_theme_switcher.selectedIndex = 1;
-  } else {
-    navbar_theme_switcher.selectedIndex = 2;
-  }
+    navbar_theme_switcher.selectedIndex = website_theme === "light" ? 0 : 1;
 
-  navbar_theme_switcher.addEventListener("change", (e) => {
-    if (e.target.selectedIndex === 0) {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("website_theme", "light");
-      document.getElementById("navbar-theme-icon").innerHTML;
-    } else if (e.target.selectedIndex === 1) {
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("website_theme", "dark");
-    }
+    navbar_theme_switcher.addEventListener("change", (e) => {
+      if (e.target.selectedIndex === 0) {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+        localStorage.setItem("website_theme", "light");
+        document.getElementById("navbar-theme-icon").innerHTML;
+      } else if (e.target.selectedIndex === 1) {
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("website_theme", "dark");
+      }
+    });
   });
 </script>
